@@ -3,7 +3,7 @@ MaGGie
 
 ![Maggie Simpson](http://upload.wikimedia.org/wikipedia/en/9/9d/Maggie_Simpson.png)
 
-MaGGie (Molecule Geomtry Generator) - program for building 3D geomtry from molecule structure.
+MaGGie (Molecule Geometry Generator) - program for building 3D geomtry from molecule structure.
 
 Building
 --------
