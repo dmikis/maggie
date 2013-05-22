@@ -1,5 +1,5 @@
-#ifndef _PARSER_H_
-#define _PARSER_H_
+#ifndef _MAGGIE_PARSER_H_
+#define _MAGGIE_PARSER_H_
 
 /**
  * @file parser.h
@@ -36,7 +36,7 @@ typedef struct {
     free_metadata_cb_t _free_metadata_cb;
     size_t _lines_fed;
     metadata_ptr_t _metadata;
-} parser_t;
+} mgg_parser_t;
 
 /**
  * Create new parser.
@@ -47,7 +47,7 @@ typedef struct {
  *      metadata.
  * @param [in] metadata Pointer to parser's metadata.
  */
-parser_t * parser_alloc(line_feed_cb_t line_feed_cb, eof_feed_cb_t eof_feed_cb,
+mgg_parser_t * mgg_parser_alloc(line_feed_cb_t line_feed_cb, eof_feed_cb_t eof_feed_cb,
     free_metadata_cb_t free_metadata_cb, metadata_ptr_t metadata);
 
 /**
@@ -56,7 +56,7 @@ parser_t * parser_alloc(line_feed_cb_t line_feed_cb, eof_feed_cb_t eof_feed_cb,
  * @param [in] parser
  * @param [in] line Line to be fed.
  */
-int parser_feed_line(parser_t * parser, const char * line);
+int mgg_parser_feed_line(mgg_parser_t * parser, const char * line);
 
 /**
  * Finish parsing on parser.
@@ -64,13 +64,13 @@ int parser_feed_line(parser_t * parser, const char * line);
  * @param [in] parser Pointer to parser.
  * @returns Pointer to parsing result or NULL in case of errors.
  */
-void * parser_feed_eof(parser_t * parser);
+void * mgg_parser_feed_eof(mgg_parser_t * parser);
 
 /**
  * Free previously allocated parser.
  *
  * @param [in] parser Parser to be freed.
  */
-void parser_free(parser_t * parser);
+void mgg_parser_free(mgg_parser_t * parser);
 
-#endif // _PARSER_H_
+#endif // _MAGGIE_PARSER_H_

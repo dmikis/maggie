@@ -19,7 +19,7 @@ typedef struct {
 
 void mol2_molecule_free(mol2_molecule_t * molecule);
 
-parser_t * mol2_molecule_parser_alloc(void);
+mgg_parser_t * mol2_molecule_parser_alloc(void);
 
 void mol2_molecule_serialize(const mol2_molecule_t * molecule, char ** buffer, size_t * buffer_size);
 

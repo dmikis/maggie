@@ -5,7 +5,7 @@
 #define UNUSED(x) ((void) (x))
 
 typedef struct {
-    parser_t * current_parser;
+    mgg_parser_t * current_parser;
     mol2_t * current_rec;
     uint8_t current_rec_type;
     mol2_db_t db;
@@ -35,8 +35,8 @@ static void metadata_free(
     metadata_ptr_t ptr
 );
 
-parser_t * mol2_db_parser_alloc(void) {
-    return parser_alloc(
+mgg_parser_t * mol2_db_parser_alloc(void) {
+    return mgg_parser_alloc(
         line_feed_cb,
         eof_feed_cb,
         metadata_free,
@@ -96,23 +96,23 @@ int line_feed_cb(
 
     if (line[0] == '@') {
         if (metadata->current_parser) {
-            void * parser_result = parser_feed_eof(metadata->current_parser);
-            parser_free(metadata->current_parser);
+            void * mgg_parser_result = mgg_parser_feed_eof(metadata->current_parser);
+            mgg_parser_free(metadata->current_parser);
             metadata->current_parser = NULL;
 
-            if (parser_result) {
+            if (mgg_parser_result) {
                 switch (metadata->current_rec_type) {
                     case MOLECULE_REC:
-                        metadata->current_rec->molecule = (mol2_molecule_t *) parser_result;
+                        metadata->current_rec->molecule = (mol2_molecule_t *) mgg_parser_result;
                         break;
                     case ATOM_REC:
-                        metadata->current_rec->atoms = (mol2_atom_t *) parser_result;
+                        metadata->current_rec->atoms = (mol2_atom_t *) mgg_parser_result;
                         break;
                     case BOND_REC:
-                        metadata->current_rec->bonds = (mol2_bond_t *) parser_result;
+                        metadata->current_rec->bonds = (mol2_bond_t *) mgg_parser_result;
                         break;
                     case SUBSTRUCTURE_REC:
-                        metadata->current_rec->substructures = (mol2_substructure_t *) parser_result;
+                        metadata->current_rec->substructures = (mol2_substructure_t *) mgg_parser_result;
                         break;
                 }
             } else RETURN_ERROR;
@@ -167,7 +167,7 @@ int line_feed_cb(
         if (!metadata->current_parser) RETURN_ERROR;
 
         /* TODO comments support */
-        return parser_feed_line(metadata->current_parser, line);
+        return mgg_parser_feed_line(metadata->current_parser, line);
     }
 
     return 0;
@@ -180,23 +180,23 @@ void * eof_feed_cb(
     metadata_t * metadata = (metadata_t *) metadata_ptr;
 
     if (metadata->current_parser) {
-        void * parser_result = parser_feed_eof(metadata->current_parser);
-        parser_free(metadata->current_parser);
+        void * mgg_parser_result = mgg_parser_feed_eof(metadata->current_parser);
+        mgg_parser_free(metadata->current_parser);
         metadata->current_parser = NULL;
 
-        if (parser_result) {
+        if (mgg_parser_result) {
             switch (metadata->current_rec_type) {
                 case MOLECULE_REC:
-                    metadata->current_rec->molecule = (mol2_molecule_t *) parser_result;
+                    metadata->current_rec->molecule = (mol2_molecule_t *) mgg_parser_result;
                     break;
                 case ATOM_REC:
-                    metadata->current_rec->atoms = (mol2_atom_t *) parser_result;
+                    metadata->current_rec->atoms = (mol2_atom_t *) mgg_parser_result;
                     break;
                 case BOND_REC:
-                    metadata->current_rec->bonds = (mol2_bond_t *) parser_result;
+                    metadata->current_rec->bonds = (mol2_bond_t *) mgg_parser_result;
                     break;
                 case SUBSTRUCTURE_REC:
-                    metadata->current_rec->substructures = (mol2_substructure_t *) parser_result;
+                    metadata->current_rec->substructures = (mol2_substructure_t *) mgg_parser_result;
                     break;
             }
         } else {
@@ -226,7 +226,7 @@ void metadata_free(
     metadata_t * metadata = (metadata_t *) ptr;
 
     if (metadata->current_parser) {
-        parser_free(metadata->current_parser);
+        mgg_parser_free(metadata->current_parser);
     }
 
     free(ptr);

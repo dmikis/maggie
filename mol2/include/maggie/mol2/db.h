@@ -16,6 +16,6 @@ void mol2_db_free(mol2_db_t db);
 
 #define MOL2_DB_NEXT(db) ((mol2_db_t) (db)->next)
 
-parser_t * mol2_db_parser_alloc(void);
+mgg_parser_t * mol2_db_parser_alloc(void);
 
 #endif // _MOL2_DB_H_

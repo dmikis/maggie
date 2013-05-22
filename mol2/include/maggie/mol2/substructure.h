@@ -14,6 +14,6 @@ typedef struct {
     /* FIXME add other fields */
 } mol2_substructure_t;
 
-parser_t * mol2_substructure_parser_alloc(size_t substructures_num);
+mgg_parser_t * mol2_substructure_parser_alloc(size_t substructures_num);
 
 #endif // _MOL2_SUBSTRUTURE_H_

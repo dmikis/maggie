@@ -18,7 +18,7 @@ typedef struct {
 
 void mol2_atom_free(mol2_atom_t * ptr);
 
-parser_t * mol2_atom_parser_alloc(size_t atoms_num);
+mgg_parser_t * mol2_atom_parser_alloc(size_t atoms_num);
 
 void mol2_atom_serialize(const mol2_atom_t * atom, char ** buffer, size_t * buffer_size);
 

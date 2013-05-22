@@ -14,13 +14,13 @@ typedef struct {
 static int line_feed_cb(size_t lines_fed, const char * line, metadata_ptr_t metadata_ptr);
 static void * eof_feed_cb(size_t lines_fed, metadata_ptr_t metadata_ptr);
 
-parser_t * mol2_substructure_parser_alloc(size_t substructures_num) {
+mgg_parser_t * mol2_substructure_parser_alloc(size_t substructures_num) {
     metadata_t * metadata = (metadata_t *) malloc(sizeof(metadata_t));
 
     metadata->substructures = (mol2_substructure_t *) malloc(substructures_num * sizeof(mol2_substructure_t));
     metadata->substructures_num = substructures_num;
 
-    return parser_alloc(
+    return mgg_parser_alloc(
         line_feed_cb,
         eof_feed_cb,
         free,

@@ -10,7 +10,7 @@ typedef struct {
     uint8_t type;
 } mol2_bond_t;
 
-parser_t * mol2_bond_parser_alloc(size_t bonds_num);
+mgg_parser_t * mol2_bond_parser_alloc(size_t bonds_num);
 
 void mol2_bond_serialize(const mol2_bond_t * bond, char ** buffer, size_t * buffer_size);
 

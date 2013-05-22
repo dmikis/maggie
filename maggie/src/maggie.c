@@ -31,7 +31,7 @@ int main(int argc, char ** argv) {
 
     if (!input_file) LOG_FATAL("Cannot open %s", argv[1]);
 
-    parser_t * db_parser = mol2_db_parser_alloc();
+    mgg_parser_t * db_parser = mol2_db_parser_alloc();
 
     char * line_buffer = NULL;
     size_t line_buff_size = 0l;
@@ -40,11 +40,11 @@ int main(int argc, char ** argv) {
         while (isspace(line_buffer[line_buff_len - 1])) {
             line_buffer[line_buff_len-- - 1] = '\0';
         }
-        parser_feed_line(db_parser, line_buffer);
+        mgg_parser_feed_line(db_parser, line_buffer);
     }
 
-    mol2_db_t db = parser_feed_eof(db_parser);
-    parser_free(db_parser);
+    mol2_db_t db = mgg_parser_feed_eof(db_parser);
+    mgg_parser_free(db_parser);
 
     fclose(input_file);
 

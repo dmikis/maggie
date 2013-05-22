@@ -14,10 +14,10 @@ void mol2_molecule_free(mol2_molecule_t * molecule) {
     free(molecule);
 }
 
-parser_t * mol2_molecule_parser_alloc(void) {
+mgg_parser_t * mol2_molecule_parser_alloc(void) {
     void ** result_ptr = (void **) malloc(sizeof(void *));
     *result_ptr = malloc(sizeof(mol2_molecule_t));
-    return parser_alloc(
+    return mgg_parser_alloc(
         line_feed_cb,
         eof_feed_cb,
         free,

@@ -23,13 +23,13 @@ void mol2_atom_free(mol2_atom_t * ptr) {
     free(ptr);
 }
 
-parser_t * mol2_atom_parser_alloc(size_t atoms_num) {
+mgg_parser_t * mol2_atom_parser_alloc(size_t atoms_num) {
     metadata_t * metadata = (metadata_t *) malloc(sizeof(metadata_t));
 
     metadata->atoms = (mol2_atom_t *) malloc(atoms_num * sizeof(mol2_atom_t));
     metadata->atoms_num = atoms_num;
 
-    return parser_alloc(
+    return mgg_parser_alloc(
         line_feed_cb,
         eof_feed_cb,
         free,
