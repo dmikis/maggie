@@ -12,6 +12,7 @@ solution "maggie"
         defines { "NDEBUG" }
         flags { "Optimize" }
 
+    include "utils/strbuf"
     include "logger"
     include "parser"
     include "mol2"
