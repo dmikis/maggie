@@ -14,6 +14,7 @@ includedirs {
 }
 
 links {
+    "logger",
     "parser",
     "mol2",
     "bondinfo",

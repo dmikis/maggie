@@ -5,16 +5,14 @@
 
 #include <maggie/bondinfo.h>
 
-#define LOG_ERROR(f, ...) fprintf( \
-    stderr, \
-    "%s:%d: " f "\n", \
-    __FILE__, \
-    __LINE__, \
-    __VA_ARGS__ \
-)
+#include <maggie/logger.h>
 
+/**
+ * @param [in] rv Return value. Will be returned in case of absence of
+ *      usable database.
+ */
 #define CHECK_DB(rv) if (!DB) { \
-    LOG_ERROR("%s", "There is no available database"); \
+    MGG_LOG_ERROR("%s", "There is no available database"); \
     return rv; \
 }
 
@@ -28,7 +26,7 @@ static double process_query(const char * query, size_t query_max_size);
 
 void bi_open_db(const char * db_filename) {
     if (sqlite3_open_v2(db_filename, &DB, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK) {
-        LOG_ERROR("%s", sqlite3_errmsg(DB));
+        MGG_LOG_ERROR("%s", sqlite3_errmsg(DB));
         bi_close_db();
     }
 }
@@ -126,7 +124,7 @@ void bi_close_db(void) {
 double process_query(const char * query, size_t query_max_size) {
     sqlite3_stmt * query_handle = NULL;
     if (sqlite3_prepare_v2(DB, query, query_max_size, &query_handle, NULL) != SQLITE_OK) {
-        LOG_ERROR("%s", sqlite3_errmsg(DB));
+        MGG_LOG_ERROR("%s", sqlite3_errmsg(DB));
         return NaN;
     }
 
@@ -137,7 +135,7 @@ double process_query(const char * query, size_t query_max_size) {
         if (sqlite3_data_count(query_handle) == 1) {
             result = sqlite3_column_double(query_handle, 0);
         } else {
-            LOG_ERROR("Got %d result columns, 1 expected", sqlite3_data_count(query_handle));
+            MGG_LOG_ERROR("Got %d result columns, 1 expected", sqlite3_data_count(query_handle));
             return NaN;
         }
     }
@@ -145,7 +143,7 @@ double process_query(const char * query, size_t query_max_size) {
     sqlite3_finalize(query_handle);
 
     if (err_code != SQLITE_DONE) {
-        LOG_ERROR("%s", sqlite3_errmsg(DB));
+        MGG_LOG_ERROR("%s", sqlite3_errmsg(DB));
         return NaN;
     }
 
