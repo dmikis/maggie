@@ -6,6 +6,7 @@ language "C"
 files { "src/**.c", "include/**.h" }
 includedirs {
     "./include",
+    "../logger/include",
     "../parser/include",
     "../mol2/include",
     "../bondinfo/include",

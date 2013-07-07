@@ -1,5 +1,7 @@
 #include <gsl/gsl_multimin.h>
 
+#include <maggie/logger.h>
+
 #include "errfn.h"
 #include "util.h"
 
@@ -34,7 +36,7 @@ gsl_vector * refine_coords(gsl_vector * coords, gsl_matrix * dist_limits) {
         status = gsl_multimin_fdfminimizer_iterate(s);
 
         if (status) {
-            LOG_INF("break, status = %d, GSL_ENOPROG = %d", status, GSL_ENOPROG);
+            MGG_LOG_INFO("Break! Status: %d; GSL_ENOPROG: %d", status, GSL_ENOPROG);
             break;
         }
 
@@ -44,11 +46,11 @@ gsl_vector * refine_coords(gsl_vector * coords, gsl_matrix * dist_limits) {
     if (iters_num == 100000) LOG_FATAL("Too many iterations");
 
     if (status == GSL_SUCCESS) {
-        LOG_INF("Minimum!");
+        MGG_LOG_INFO("Minimum!");
     }
 
     PRINT_VECTOR("x", s->x);
-    LOG_INF("error fn val: %lf", s->f);
+    MGG_LOG_INFO("Error function value: %lf", s->f);
 
     gsl_vector * refined_coords = gsl_vector_alloc(s->x->size);
     gsl_vector_memcpy(refined_coords, s->x);
@@ -79,8 +81,6 @@ double error_fn(const gsl_vector * x, void * params) {
                 Eij = SQR(d - u);
             }
 
-            LOG_INF("i:%ld\tj:%ld\td:%lf\tl:%lf\tu:%lf\tEij:%lf", i, j, d, l, u, Eij);
-
             result += Eij;
         }
     }
@@ -110,8 +110,6 @@ void error_dfn(const gsl_vector * x, void * params, gsl_vector * g) {
                 } else if (d > u) {
                     grad_el -= 4.0 * (d - u) * (gsl_vector_get(x, 3 * j + k) - gsl_vector_get(x, 3 * i + k));
                 }
-
-                LOG_INF("i:%ld\tj:%ld\td:%lf\tl:%lf\tu:%lf\tgrad_el:%lf", i, j, d, l, u, grad_el);
             }
             for (size_t j = i+1; j < limits->size1; ++j) {
                 double d =
@@ -126,8 +124,6 @@ void error_dfn(const gsl_vector * x, void * params, gsl_vector * g) {
                 } else if (d > u) {
                     grad_el += 4.0 * (d - u) * (gsl_vector_get(x, 3 * i + k) - gsl_vector_get(x, 3 * j + k));
                 }
-
-                LOG_INF("i:%ld\tj:%ld\td:%lf\tl:%lf\tu:%lf\tgrad_el:%lf", i, j, d, l, u, grad_el);
             }
             gsl_vector_set(g, 3 * i + k, grad_el);
         }
