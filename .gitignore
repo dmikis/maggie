@@ -1,5 +1,8 @@
 Makefile
+*.make
 
 bin/
 lib/
 obj/
+
+/tests/tests

@@ -19,3 +19,5 @@ solution "maggie"
     include "bondinfo"
     include "dg"
     include "maggie"
+
+    include "tests"
